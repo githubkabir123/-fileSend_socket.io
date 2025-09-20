@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Uploaded Files Gallery</title>
+  <style>
+    /* === Variables === */
+    :root {
+      --bg: linear-gradient(135deg, #ff7eb3, #ff758c, #ffcc70);
+      --text-color: #000;
+      --card-bg: rgba(255,255,255,0.8);
+      --card-border: rgba(0,0,0,0.1);
+      --link-bg: linear-gradient(90deg, #6a11cb, #2575fc);
+      --link-bg-hover: linear-gradient(90deg, #ff758c, #ff7eb3);
+    }
+    body.dark {
+      --bg: linear-gradient(135deg, #1e1e2f, #121212, #2c3e50);
+      --text-color: #fff;
+      --card-bg: rgba(255,255,255,0.08);
+      --card-border: rgba(255,255,255,0.2);
+      --link-bg: linear-gradient(90deg, #43e97b, #38f9d7);
+      --link-bg-hover: linear-gradient(90deg, #ff6a00, #ee0979);
+    }
+
+    /* Navbar */
+    .navbar {
+      width: 100%;
+      background: linear-gradient(90deg, #ff6a00, #ee0979, #2575fc, #43e97b);
+      background-size: 300% 300%;
+      animation: gradientMove 8s ease infinite;
+      padding: 12px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 2px solid rgba(255,255,255,0.2);
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links li a:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .nav-links {
+        flex-direction: column;
+        background: rgba(0,0,0,0.6);
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        padding: 10px 20px;
+        border-radius: 10px;
+        display: none;
+      }
+      .nav-links.active {
+        display: flex;
+      }
+    }
+
+    button {
+      padding: 12px 24px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ff6a00, #ee0979);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+    }
+
+    /* Toggle button */
+    .toggle-btn {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      border-radius: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* === Reset === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      padding: 20px;
+      color: var(--text-color);
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+
+    /* === Header === */
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 2.2rem;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+    }
+
+    /* === Gallery === */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 10px;
+    }
+
+    .item {
+      background: var(--card-bg);
+      border-radius: 15px;
+      padding: 15px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease;
+    }
+    .item:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.3);
+    }
+
+    img, video {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* === Links === */
+    a {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-decoration: none;
+      background: var(--link-bg);
+      color: white;
+      transition: background 0.3s ease, transform 0.2s;
+    }
+    a:hover {
+      background: var(--link-bg-hover);
+      transform: scale(1.05);
+    }
+
+    /* === Responsive === */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="logo">🌈 MyUploader</div>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/galery">Gallery</a></li>
+    <li><button class="toggle-btn" id="toggleTheme">🌙 Dark</button></li>
+  </ul>
+</nav>
+
+<h1>📂 Uploaded Files Gallery</h1>
+<div class="gallery" id="gallery"></div>
+
+<script>
+  async function loadGallery() {
+    const res = await fetch('/files');
+    const data = await res.json();
+    const gallery = document.getElementById('gallery');
+    gallery.innerHTML = '';
+
+    data.files.forEach(file => {
+      const ext = file.split('.').pop().toLowerCase();
+      const fileUrl = `/uploads/${file}`;
+      const item = document.createElement('div');
+      item.className = 'item';
+
+      if (['jpg','jpeg','png','gif','webp'].includes(ext)) {
+        item.innerHTML = `
+          <img src="${fileUrl}" alt="${file}">
+          <br><a href="${fileUrl}" download>⬇ Download</a>`;
+      } else if (['mp4','webm'].includes(ext)) {
+        item.innerHTML = `
+          <video controls><source src="${fileUrl}" type="video/${ext}"></video>
+          <br><a href="${fileUrl}" download>⬇ Download</a>`;
+      } else if (ext === 'pdf') {
+        item.innerHTML = `
+          <a href="${fileUrl}" target="_blank">📑 View PDF</a>
+          <br><a href="${fileUrl}" download>⬇ Download</a>`;
+      } else {
+        item.innerHTML = `<a href="${fileUrl}" download>📎 ${file}</a>`;
+      }
+
+      gallery.prepend(item);
+    });
+  }
+  loadGallery();
+
+  // === Dark/Light Theme Toggle ===
+  const toggleBtn = document.getElementById('toggleTheme');
+  const body = document.body;
+
+  // Load saved theme
+  if (localStorage.getItem('theme') === 'dark') {
+    body.classList.add('dark');
+    toggleBtn.textContent = "☀ Light";
+  }
+
+  toggleBtn.addEventListener('click', () => {
+    body.classList.toggle('dark');
+    if (body.classList.contains('dark')) {
+      toggleBtn.textContent = "☀ Light";
+      localStorage.setItem('theme', 'dark');
+    } else {
+      toggleBtn.textContent = "🌙 Dark";
+      localStorage.setItem('theme', 'light');
+    }
+  });
+</script>
+</body>
+</html>
