@@ -279,8 +279,8 @@ button {
     });
 
     document.getElementById('sendBtn').addEventListener('click', () => {
-      const files = document.getElementById('fileInput').files[0];
-      console.log("file selected".files)
+      const files = document.getElementById('fileInput').files;
+      console.log("file selected", files)
       if (!files.length) return alert('Please select at least one file');
       [...files].forEach(file => uploadFile(file));
     });
