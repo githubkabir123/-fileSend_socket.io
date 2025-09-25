@@ -14,6 +14,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Define the folder path
+const uploadsPath = path.join(__dirname, 'uploads');
+
+
 // Check if the folder exists
 if (!fs.existsSync(uploadsPath)) {
   // Create the folder
