@@ -14,6 +14,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Check if the folder exists
+if (!fs.existsSync(uploadsPath)) {
+  // Create the folder
+  fs.mkdirSync(uploadsPath, { recursive: true });
+  console.log('Uploads folder created successfully!');
+} else {
+  console.log('Uploads folder already exists.');
+}
+
 // Store streams per file
 const uploads = {};
 
